@@ -1,0 +1,7 @@
+.settingIcons {
+  @apply flex h-10 w-10  cursor-pointer items-center justify-center rounded-full bg-[#e4e6eb] p-4 hover:bg-[#D8DADF];
+}
+
+.settingFunctions {
+  @apply w-98/100 hover:bg-iconHover flex cursor-pointer items-center justify-start gap-3 rounded-md p-2 text-base font-medium;
+}

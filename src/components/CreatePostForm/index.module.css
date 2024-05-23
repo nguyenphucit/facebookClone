@@ -1,0 +1,6 @@
+.PostCreateIconBox {
+  @apply relative cursor-pointer rounded-full p-4 hover:bg-newFeedmain;
+}
+.PostCreateIcon {
+  @apply absolute bottom-0 left-0 right-0 top-0 m-auto cursor-pointer;
+}

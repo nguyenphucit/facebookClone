@@ -1,0 +1,9 @@
+.FriendListItem {
+  @apply flex items-center gap-3 w-full hover:cursor-pointer hover:bg-[#E4E6E9] pl-2 py-3 box-border rounded-lg;
+}
+.PostCreateIconBox {
+  @apply relative p-4 rounded-full hover:bg-hover cursor-pointer;
+}
+.PostCreateIcon {
+  @apply cursor-pointer absolute top-0 left-0 right-0 bottom-0 m-auto;
+}

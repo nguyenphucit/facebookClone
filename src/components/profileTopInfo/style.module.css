@@ -1,0 +1,4 @@
+.topMenuIcon {
+    @apply flex cursor-pointer items-center justify-center rounded-lg px-4 py-4 text-base font-medium text-registerLabel duration-200  hover:bg-[#F2F2F2];
+  }
+  

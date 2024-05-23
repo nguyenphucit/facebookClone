@@ -1,0 +1,3 @@
+.leftMenuItem {
+  @apply flex items-center gap-3 w-full hover:cursor-pointer hover:bg-[#E4E6E9] pl-2 py-3 box-border rounded-lg;
+}

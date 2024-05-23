@@ -1,0 +1,7 @@
+.topMenuIcon {
+  @apply flex h-14 w-1/5 flex-1 cursor-pointer items-center justify-center rounded-lg duration-500  hover:bg-[#F2F2F2];
+}
+
+.topRightMenuIcon {
+  @apply relative flex h-10 w-10  cursor-pointer items-center justify-center rounded-full bg-[#e4e6eb] p-4 hover:bg-[#D8DADF];
+}
