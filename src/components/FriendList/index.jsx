@@ -65,7 +65,7 @@ export const FriendList = () => {
     setcurrentChat(id);
   };
   return (
-    <div className="box-border h-dvh  flex-[1] pt-16">
+    <div className="box-border h-dvh  flex-[1] pt-16 xs:hidden">
       <div className="fixed  h-4/5 w-1/4">
         {ChatBoxVisible ? (
           <ChatBox

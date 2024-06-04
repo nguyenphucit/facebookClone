@@ -28,7 +28,7 @@ const LeftNav = () => {
         alt="facebook logo"
         className="mr-3 h-11 w-11 object-center"
       />
-      <div className="box-content flex h-10  w-60 items-center rounded-3xl border-none bg-newFeedmain px-1 pr-7 outline-none  placeholder:text-[14px]">
+      <div className="box-content flex h-10  w-60 items-center rounded-3xl border-none bg-newFeedmain px-1 pr-7 outline-none  placeholder:text-[14px] xs:w-fit">
         <SearchIcon
           sx={{ marginLeft: "10px", fontSize: "24px", color: "#65676B" }}
         />
@@ -43,7 +43,7 @@ const LeftNav = () => {
 };
 const MiddleNav = () => {
   return (
-    <div className="mb-3 flex h-full flex-1 items-center ">
+    <div className="mb-3 flex h-full flex-1 items-center xs:hidden ">
       <div className={style.topMenuIcon}>
         <HomeIcon fontSize="base" sx={{ color: "#65676b" }} />
       </div>
@@ -68,7 +68,7 @@ const RightNav = () => {
 
   return (
     <div className="flex-1 items-center justify-center">
-      <ul className="flex items-center justify-end gap-5">
+      <ul className="flex items-center justify-end gap-5 xs:gap-1">
         <li>
           <span className={`${style.topRightMenuIcon}`}>
             <AppsIcon sx={{ fontSize: "24px" }} />

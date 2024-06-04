@@ -75,11 +75,11 @@ const CreatePostMedia = ({
         className="flex w-full items-center justify-center p-2"
         onSubmit={handleSubmit(handleCreatePost)}
       >
-        <div className=" border-main border-main flex w-full cursor-pointer items-center rounded-md border-[1px] px-2 shadow-md">
-          <div className="flex h-14 flex-[1] items-center justify-center text-base font-semibold">
+        <div className=" border-main border-main flex w-full cursor-pointer items-center rounded-md border-[1px] px-2 shadow-md xs:py-2">
+          <div className="flex h-14 flex-[1] items-center justify-center text-base font-semibold xs:hidden">
             Thêm vào bài viết của bạn
           </div>
-          <div className="flex flex-[1] gap-2">
+          <div className="flex flex-[1] gap-2 xs:justify-center">
             <div className={style.PostCreateIconBox}>
               <label htmlFor="fileInput">
                 <img
@@ -175,7 +175,7 @@ export const CreatePostForm = ({ setCreatePost }) => {
   };
   return (
     <div className="fixed left-0 top-0 z-[100] h-dvh w-dvw bg-[#fcfcfd] bg-opacity-50 ">
-      <div className="absolute bottom-0 left-0 right-0 top-0 z-50 mb-auto ml-auto mr-auto mt-auto h-107 w-125 rounded-lg bg-white p-4 shadow-lg">
+      <div className="absolute bottom-0 left-0 right-0 top-0 z-50 mb-auto ml-auto mr-auto mt-auto h-107 w-125 rounded-lg bg-white p-4 shadow-lg xs:w-96">
         {/* header */}
         <CreatePostFormHeader setCreatePost={setCreatePost} />
         <Divider variant="fullWidth" />

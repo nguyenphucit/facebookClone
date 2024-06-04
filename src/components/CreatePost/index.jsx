@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 const CreatePostInput = ({ setCreatePostVisible }) => {
   const user = useSelector((state) => state.user);
   return (
-    <div className=" flex w-full flex-[1] flex-col">
+    <div className=" flex w-full flex-[1] flex-col xs:mt-2">
       <div className="flex w-full items-center gap-3">
         <img
           src={noAvatar}
@@ -33,15 +33,31 @@ const CreatePostAction = () => {
     <div className="flex w-full flex-[1] items-center">
       <div className="flex w-full items-center">
         <div className={style.createPostIconActionIcon}>
-          <img src={LiveIcon} alt="live right now" width={24} height={24} />
+          <img
+            src={LiveIcon}
+            alt="live right now"
+            width={24}
+            height={24}
+            className="xs:h-5 xs:w-5"
+          />
           Video trực tiếp
         </div>
         <div className={style.createPostIconActionIcon}>
-          <img src={videoOrImageIcon} alt="i or video" width={24} height={24} />
+          <img
+            src={videoOrImageIcon}
+            alt="i or video"
+            width={24}
+            height={24}
+            className="xs:h-5 xs:w-5"
+          />
           Ảnh/Video
         </div>
         <div className={style.createPostIconActionIcon}>
-          <img src={ReactIcon} alt="your reaction" className="h-6 w-6" />
+          <img
+            src={ReactIcon}
+            alt="your reaction"
+            className="h-6 w-6 xs:h-5 xs:w-5"
+          />
           Hoạt động
         </div>
       </div>
@@ -50,7 +66,7 @@ const CreatePostAction = () => {
 };
 export const CreatePost = ({ setCreatePostVisible }) => {
   return (
-    <div className="flex h-32 w-125 flex-col items-center justify-center rounded-lg bg-white p-4 shadow-md">
+    <div className="flex h-32 w-125 flex-col items-center justify-center rounded-lg bg-white p-4 shadow-md xs:w-96 ">
       <CreatePostInput setCreatePostVisible={setCreatePostVisible} />
       <CreatePostAction />
     </div>

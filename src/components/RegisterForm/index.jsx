@@ -58,7 +58,7 @@ export const RegisterForm = ({ setIsRegister }) => {
     }
   };
   return (
-    <div className="absolute bottom-0 left-0 right-0 top-0 z-20 mb-auto ml-auto mr-auto mt-auto box-content h-fit min-h-134 w-108 rounded-lg bg-white px-5 py-2 pb-10 shadow-2xl">
+    <div className="absolute bottom-0 left-0 right-0 top-0 z-20 mb-auto ml-auto mr-auto mt-auto box-content h-fit min-h-134 w-108 rounded-lg bg-white px-5 py-2 pb-10 shadow-2xl xs:w-80">
       <div className="mt-0">
         <div className=" mb-12 flex justify-between text-start text-4xl font-bold">
           Sign Up

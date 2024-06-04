@@ -71,6 +71,13 @@ module.exports = {
       'commentAuthor':'.8125rem',
       'commentContent':'.9375rem',
       'chatContent':'.9375rem'
+     },
+     screens:{
+      xs: {'max':'680px'},
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px'
      }
     },
   },

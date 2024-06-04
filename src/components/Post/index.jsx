@@ -84,7 +84,7 @@ const PostAction = ({ setpostDetail }) => {
 export const Post = ({ data }) => {
   const [postDetail, setpostDetail] = useState(false);
   return (
-    <div className="mt-5 h-auto w-125 rounded-md bg-white py-3 shadow-md">
+    <div className="mt-5 h-auto w-125 rounded-md bg-white py-3 shadow-md xs:w-96">
       {postDetail ? (
         <PostDetail data={data} setpostDetail={setpostDetail} />
       ) : null}

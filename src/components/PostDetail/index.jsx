@@ -174,7 +174,7 @@ export const PostDetail = ({ data, setpostDetail }) => {
   // }, []);
   return (
     <div className="fixed left-0 top-0 z-[100] h-dvh w-dvw bg-[#fcfcfd] bg-opacity-50 ">
-      <div className="absolute bottom-0 left-0 right-0 top-0 z-50 mb-auto ml-auto mr-auto mt-auto h-158 w-175 rounded-md bg-white shadow-loginForm">
+      <div className="absolute bottom-0 left-0 right-0 top-0 z-50 mb-auto ml-auto mr-auto mt-auto h-158 w-175 rounded-md bg-white shadow-loginForm xs:w-dvw">
         {/* header */}
         <PostDetailHeader data={data} setpostDetail={setpostDetail} />
         <Divider />
