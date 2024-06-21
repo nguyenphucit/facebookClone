@@ -71,7 +71,7 @@ export const NewFeed = () => {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const response = await PostApi.getAllPosts();
+        const response = await PostApi.getAllPosts({});
         if (typeof response === "object")
           dispatch(getAllPosts({ posts: response.data }));
       } catch (error) {
@@ -95,6 +95,7 @@ export const NewFeed = () => {
   }, [id]);
   useEffect(() => {
     const getNotifications = async () => {
+      console.log(id);
       try {
         const response = await NotificationApi.getNotificationByUserId(id);
         if (response)
@@ -122,9 +123,6 @@ export const NewFeed = () => {
       socket?.on("notification", (notification) =>
         NotificationListener(notification),
       );
-    // return async () => {
-    //   socket?.off("notification", NotificationListener);
-    // };
     // eslint-disable-next-line
   }, [socket]);
   return (

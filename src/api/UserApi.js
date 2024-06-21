@@ -11,6 +11,16 @@ const UserApi={
             return error.response.data.message  
         }
     },
+    getAllUser:async({search,items_per_page,page})=>{
+        const url=`/user?search=${search}&items_per_page=${items_per_page}&page=${page}`
+        try {
+            const response=await axiosClient.get(url)
+            return response
+        } catch (error) {
+            if(error.response)
+            return error.response.data.message  
+        }
+    },
     UpdateAvatar:async(formData,userId)=>{
         const url=`/user/updateAvatar/${userId}`
         try {

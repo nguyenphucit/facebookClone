@@ -2,6 +2,8 @@ import axiosClient from "./axiosConfig"
 
 const NotificationApi={
      getNotificationByUserId:async (userId)=>{
+        if(!userId)
+            return;
         const url=`/notification/${userId}`
         try {
             const response=await axiosClient.get(url)

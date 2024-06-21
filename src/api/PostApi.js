@@ -1,8 +1,13 @@
 import axiosClient from "./axiosConfig"
 
 const PostApi={
-    getAllPosts:async ()=>{
-        const url='/posts'
+    getAllPosts:async ({search,page,items_per_page})=>{
+        const params = new URLSearchParams();
+        if (search) params.append('search', search);
+        if (page) params.append('page', page);
+        if (items_per_page) params.append('items_per_page', items_per_page);
+
+        const url = `/posts?${params.toString()}`;
         try {
             const response=await axiosClient.get(url)
             return response

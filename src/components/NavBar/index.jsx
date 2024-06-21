@@ -18,15 +18,16 @@ import { NotificationForm } from "../NotificationForm";
 import NotificationApi from "../../api/NotificationApi";
 const LeftNav = () => {
   const navigate = useNavigate();
+  const handleSearch = async (e) => {
+    if (e.key === "Enter") navigate(`/search?q=${e.target.value}`);
+  };
   return (
-    <div
-      className="flex flex-1 cursor-pointer items-center justify-start"
-      onClick={() => navigate("/")}
-    >
+    <div className="flex flex-1 cursor-pointer items-center justify-start">
       <img
         src={facebookLogo}
         alt="facebook logo"
         className="mr-3 h-11 w-11 object-center"
+        onClick={() => navigate("/")}
       />
       <div className="box-content flex h-10  w-60 items-center rounded-3xl border-none bg-newFeedmain px-1 pr-7 outline-none  placeholder:text-[14px] xs:w-fit">
         <SearchIcon
@@ -36,6 +37,7 @@ const LeftNav = () => {
           type="text"
           className="ml-2 w-full flex-1 border-none bg-transparent text-[17px] text-base  placeholder-[#65676B] outline-none"
           placeholder="Tìm kiếm trên Facebook"
+          onKeyDown={(e) => handleSearch(e)}
         />
       </div>
     </div>
