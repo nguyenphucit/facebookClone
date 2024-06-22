@@ -109,6 +109,7 @@ const CommentInput = ({ data, commentIpRef, socket }) => {
       postId: data.id,
     };
     const notifyInfo = {
+      type: "COMMENT_NOTIFY",
       senderId: userInfo.id,
       receiverId: data.author.id,
       postId: data.id,

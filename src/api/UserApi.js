@@ -32,6 +32,6 @@ const UserApi={
             if(error.response)
             return error.response.data.message  
         }
-    }
+    },
 }
 export default UserApi

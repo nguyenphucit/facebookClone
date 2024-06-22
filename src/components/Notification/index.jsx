@@ -1,17 +1,32 @@
 import { Avatar } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { calculateTimeDifference } from "../../helper/TimeDiff";
+import FriendApi from "../../api/FriendsApi";
+import { useSelector } from "react-redux";
 export const Notification = ({ notificationInfo }) => {
   const [timeDiff, settimeDiff] = useState();
+  const { userInfo } = useSelector((state) => state.user);
   useEffect(() => {
     const Diff = calculateTimeDifference(notificationInfo.createdAt);
     settimeDiff(() => Diff);
     // eslint-disable-next-line
   }, []);
-  console.log(timeDiff);
+  const handleAcceptFriendRequest = async () => {
+    try {
+      const response = await FriendApi.AddFriend(
+        notificationInfo.sender.id,
+        userInfo.id,
+      );
+      if (response) {
+        alert("đã chấp nhận lời mời kết bạn");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="mb-4 h-23.5 w-86 cursor-pointer rounded-lg bg-white px-1 hover:bg-iconHover ">
-      <div className="flex h-full w-full py-2 pr-3">
+    <div className="relative mb-4 h-23.5 w-86 cursor-pointer rounded-lg bg-white px-1  ">
+      <div className="flex h-full w-full py-2 pr-3 hover:bg-iconHover">
         <div className="flex h-full w-20 justify-center">
           <Avatar
             src={notificationInfo.sender.avatar}
@@ -30,7 +45,7 @@ export const Notification = ({ notificationInfo }) => {
               " "}
           </strong>
           {notificationInfo.content}
-          <div className="absolute -bottom-2 left-1 text-commentAuthor">
+          <div className="absolute -bottom-1 left-1 text-commentAuthor">
             <a href="text-registerLabel">
               {" "}
               {timeDiff?.years !== 0
@@ -48,6 +63,19 @@ export const Notification = ({ notificationInfo }) => {
           </div>
         </div>
       </div>
+      {notificationInfo.type === "FRIENDREQUEST_NOTIFY" ? (
+        <div className="absolute bottom-1 right-4 flex gap-3 ">
+          <button className="flex items-center  justify-center rounded-md bg-iconHover p-2 px-4 text-sm font-semibold text-black hover:brightness-95">
+            Từ chối
+          </button>
+          <button
+            className="flex items-center  justify-center rounded-md bg-primary p-2 text-sm font-semibold text-white hover:brightness-95"
+            onClick={() => handleAcceptFriendRequest()}
+          >
+            Chấp nhận
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

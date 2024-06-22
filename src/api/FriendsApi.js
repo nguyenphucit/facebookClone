@@ -12,6 +12,17 @@ const FriendApi={
             return error.response.data.message  
         }
     }
+    },
+
+    AddFriend:async(senderId,receiverId)=>{
+        const url=`/friend/add/${senderId}?addId=${receiverId}`
+        try {
+            const response=await axiosClient.post(url)
+            return response
+        } catch (error) {
+            if(error.response)
+            return error.response.data.message  
+        }
     }
 }
 export default FriendApi

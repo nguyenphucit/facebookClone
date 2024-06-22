@@ -95,7 +95,6 @@ export const NewFeed = () => {
   }, [id]);
   useEffect(() => {
     const getNotifications = async () => {
-      console.log(id);
       try {
         const response = await NotificationApi.getNotificationByUserId(id);
         if (response)

@@ -56,15 +56,18 @@ module.exports = {
       'loginMain':"#fcfcfd",
       'loginBtn':"#42b72a",
       'loginBtnHover':'#36a420',
+      'messageBtn':"#ebf5ff",
       'newFeedmain':'#f0f2f5',
       'hover':'#D8DADF',
       'iconHover':'#F2F2F2',
       'primary':"#0866ff",
       'GlobalHover':'rgba(0,0,0,0.6)',
       'onlineStatus':"#6edb3f",
+      'boldprimary':"#0064da"
      },
      textColor:{
       'primary':'#0866ff',
+      'boldprimary':"#0064da",
       'registerLabel':'#606770'
      },
      fontSize:{
