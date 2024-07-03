@@ -27,8 +27,7 @@ const Friend = ({ item, handleOpenChat }) => {
           <span className="absolute left-7 top-8 h-3 w-3 rounded-full border-2 border-black bg-onlineStatus "></span>
         ) : null}
         <span className="text-sm font-semibold">
-          {" "}
-          {item.firstname + " " + item.surname}{" "}
+          {item.firstname} {item.surname}
         </span>
       </li>
     </div>

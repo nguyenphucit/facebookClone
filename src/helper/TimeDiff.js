@@ -23,3 +23,12 @@ export const  calculateTimeDifference=(isoString)=>{
     years: yearsDiff
   };
   }
+
+  export const formatTimeDiff = (timeDiff) => {
+    if (timeDiff?.years) return `${timeDiff.years} năm`;
+    if (timeDiff?.months) return `${timeDiff.months} tháng`;
+    if (timeDiff?.weeks) return `${timeDiff.weeks} tuần`;
+    if (timeDiff?.days) return `${timeDiff.days} ngày`;
+    if (timeDiff?.hours) return `${timeDiff.hours} giờ`;
+    return `${timeDiff?.minutes} phút`;
+  };

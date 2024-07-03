@@ -63,8 +63,12 @@ module.exports = {
       'primary':"#0866ff",
       'GlobalHover':'rgba(0,0,0,0.6)',
       'onlineStatus':"#6edb3f",
-      'boldprimary':"#0064da"
+      'boldprimary':"#0064da",
+      'loading':"linear-gradient(#b5b5b5 0 0) padding-box,linear-gradient(rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.5) 66%, rgba(255,255,255,1) 100%) border-box;"
      },
+   backgroundImage:{
+    loading:"linear-gradient(#b5b5b5 0 0) padding-box,linear-gradient(rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.5) 66%, rgba(255,255,255,1) 100%) border-box;"
+   },
      textColor:{
       'primary':'#0866ff',
       'boldprimary':"#0064da",
@@ -83,6 +87,9 @@ module.exports = {
       xl: '1280px'
      }
     },
+    animation:{
+      loading:"spin .8s linear infinite"
+    }
   },
   plugins: [
     require('tailwind-scrollbar')({ nocompatible: true,important:true }),

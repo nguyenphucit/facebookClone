@@ -21,10 +21,13 @@ import { io } from "socket.io-client";
 import { setSocket } from "../../slice/SocketSlice";
 import { getNotification } from "../../slice/UserSlice";
 import NotificationApi from "../../api/NotificationApi";
+import { LoadingPage } from "../LoadingPage";
 export const NewFeed = () => {
   const [CreateFormVisible, setCreateFormVisible] = useState(false);
   const { posts } = useSelector((state) => state.newFeed);
   const { id } = useSelector((state) => state.user.userInfo);
+  const [Loading, setLoading] = useState(false);
+  const { socket } = useSelector((state) => state.socket);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -107,11 +110,12 @@ export const NewFeed = () => {
     // eslint-disable-next-line
   }, [id]);
   useEffect(() => {
-    const newSocket = io("http://localhost:8001");
-    dispatch(setSocket({ socket: newSocket }));
+    if (socket !== undefined) {
+      const newSocket = io("http://localhost:8001");
+      dispatch(setSocket({ socket: newSocket }));
+    }
     // eslint-disable-next-line
   }, [id]);
-  const { socket } = useSelector((state) => state.socket);
   const NotificationListener = (notification) => {
     if (id === notification.receiverId) {
       dispatch(getNotification({ notification: notification }));
@@ -126,8 +130,12 @@ export const NewFeed = () => {
   }, [socket]);
   return (
     <div className="relative min-h-dvh  w-dvw overflow-hidden bg-newFeedmain">
+      {Loading ? <LoadingPage /> : null}
       {CreateFormVisible ? (
-        <CreatePostForm setCreatePost={setCreateFormVisible} />
+        <CreatePostForm
+          setCreatePost={setCreateFormVisible}
+          setLoading={setLoading}
+        />
       ) : null}
       <NavBar />
       <div className=" flex min-h-dvh w-full ">

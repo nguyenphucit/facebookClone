@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { LoginForm } from "../../components/LoginForm";
 import { RegisterForm } from "../../components/RegisterForm";
 import FacebookLogo from "../../image/facebook.svg";
+import { LoadingPage } from "../LoadingPage";
 export const LoginPage = () => {
   const [IsRegister, setIsRegister] = useState(false);
+  const [Loading, setLoading] = useState(false);
   return (
     <div className="relative h-dvh w-full bg-newFeedmain">
+      {Loading ? <LoadingPage /> : null}
       {IsRegister ? (
         <div className="absolute left-0 top-0 z-10 h-full w-full bg-loginMain bg-opacity-50">
-          <RegisterForm setIsRegister={setIsRegister} />
+          <RegisterForm setIsRegister={setIsRegister} setLoading={setLoading} />
         </div>
       ) : null}
       <div className="mb-52 flex h-4/5 px-8 pt-10 xs:flex-col">
@@ -25,7 +28,7 @@ export const LoginPage = () => {
           </div>
         </div>
         <div className=" flex flex-1 items-center justify-start">
-          <LoginForm setIsRegister={setIsRegister} />
+          <LoginForm setIsRegister={setIsRegister} setLoading={setLoading} />
         </div>
       </div>
     </div>

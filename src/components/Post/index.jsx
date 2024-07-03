@@ -1,5 +1,6 @@
 import { Avatar, Divider } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { calculateTimeDifference, formatTimeDiff } from "../../helper/TimeDiff";
 import {
   SendOutlined,
   ModeComment,
@@ -13,6 +14,12 @@ import noAvatar from "../../image/noAvatar.png";
 import style from "./index.module.css";
 import { PostDetail } from "../PostDetail";
 const PostHeader = ({ data }) => {
+  const [timeDiff, settimeDiff] = useState();
+  useEffect(() => {
+    const Diff = calculateTimeDifference(data.createdAt);
+    settimeDiff(() => Diff);
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className="flex h-10 w-full px-3">
       <div className="flex items-center gap-2 text-base font-bold">
@@ -22,6 +29,9 @@ const PostHeader = ({ data }) => {
         />
         <span className="flex flex-col self-start">
           {data.author.firstname + " " + data.author.surname}
+          <p className="-mt-1 text-start text-commentAuthor font-normal">
+            <a href="text-registerLabel">{formatTimeDiff(timeDiff)}</a>
+          </p>
         </span>
       </div>
     </div>
@@ -30,11 +40,11 @@ const PostHeader = ({ data }) => {
 
 const PostContent = ({ data }) => {
   return (
-    <div className="">
+    <div className="mt-3">
       <div className="h-auto w-full whitespace-pre-wrap px-3 text-start text-sm">
         {data.content}
       </div>
-      <div className="mt-3 w-full">
+      <div className="mt-3 flex w-full justify-center">
         <img src={data.file[0]} className="" alt="" />
       </div>
     </div>

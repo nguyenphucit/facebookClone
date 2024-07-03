@@ -4,7 +4,7 @@ import CloseBtn from "../../image/closeButton.png";
 import style from "./index.module.css";
 import { useForm } from "react-hook-form";
 import AuthApi from "../../api/AuthApi";
-export const RegisterForm = ({ setIsRegister }) => {
+export const RegisterForm = ({ setIsRegister, setLoading }) => {
   // eslint-disable-next-line
   const [Day, setDay] = useState(() =>
     Array.from({ length: 31 }, (_, index) => index + 1),
@@ -35,9 +35,11 @@ export const RegisterForm = ({ setIsRegister }) => {
     );
     return yearsArray;
   });
+
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
     try {
+      setLoading(() => true);
       const month = data.month;
       const MonthnumberConverted =
         Month.findIndex((index) => month === index) + 1;
@@ -52,7 +54,13 @@ export const RegisterForm = ({ setIsRegister }) => {
       delete data.day;
       data.dateOfBirth = dateOfBirth;
       const response = await AuthApi.Register(data);
-      console.log(response);
+      if (response) {
+        alert(
+          "you have successfully create account, now login to your account and explore our services",
+        );
+        setLoading(() => false);
+        setIsRegister(false);
+      }
     } catch (error) {
       console.log(error);
     }

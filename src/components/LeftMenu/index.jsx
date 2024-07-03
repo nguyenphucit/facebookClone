@@ -11,7 +11,7 @@ export const LeftMenu = () => {
       <ul className=" fixed flex h-full w-1/4 flex-col gap-3 overflow-y-auto pl-6 pt-8 scrollbar scrollbar-track-[#E6E7EB] scrollbar-thumb-[#BCC0C4] scrollbar-thumb-rounded-full scrollbar-w-3">
         <li className={style.leftMenuItem}>
           <Avatar
-            src={noAvatar}
+            src={user.userInfo.avatar ?? noAvatar}
             sx={{
               width: "32px",
               height: "32px",

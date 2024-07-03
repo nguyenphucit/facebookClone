@@ -13,7 +13,7 @@ const CreatePostInput = ({ setCreatePostVisible }) => {
     <div className=" flex w-full flex-[1] flex-col xs:mt-2">
       <div className="flex w-full items-center gap-3">
         <img
-          src={noAvatar}
+          src={user.userInfo.avatar ?? noAvatar}
           alt="avatar"
           className=" h-10 w-10 rounded-full shadow-inner"
         />
@@ -29,41 +29,30 @@ const CreatePostInput = ({ setCreatePostVisible }) => {
   );
 };
 const CreatePostAction = () => {
+  const actions = [
+    { icon: LiveIcon, alt: "live right now", text: "Video trực tiếp" },
+    { icon: videoOrImageIcon, alt: "image or video", text: "Ảnh/Video" },
+    { icon: ReactIcon, alt: "your reaction", text: "Hoạt động" },
+  ];
+
   return (
-    <div className="flex w-full flex-[1] items-center">
-      <div className="flex w-full items-center">
-        <div className={style.createPostIconActionIcon}>
+    <div className="flex w-full items-center">
+      {actions.map((action, index) => (
+        <div key={index} className={style.createPostIconActionIcon}>
           <img
-            src={LiveIcon}
-            alt="live right now"
+            src={action.icon}
+            alt={action.alt}
+            className="xs:h-5 xs:w-5"
             width={24}
             height={24}
-            className="xs:h-5 xs:w-5"
           />
-          Video trực tiếp
+          {action.text}
         </div>
-        <div className={style.createPostIconActionIcon}>
-          <img
-            src={videoOrImageIcon}
-            alt="i or video"
-            width={24}
-            height={24}
-            className="xs:h-5 xs:w-5"
-          />
-          Ảnh/Video
-        </div>
-        <div className={style.createPostIconActionIcon}>
-          <img
-            src={ReactIcon}
-            alt="your reaction"
-            className="h-6 w-6 xs:h-5 xs:w-5"
-          />
-          Hoạt động
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
+
 export const CreatePost = ({ setCreatePostVisible }) => {
   return (
     <div className="flex h-32 w-125 flex-col items-center justify-center rounded-lg bg-white p-4 shadow-md xs:w-96 ">

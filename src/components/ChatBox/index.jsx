@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Clear,
   Remove,
@@ -12,10 +12,43 @@ import style from "./index.module.css";
 import Message from "../Message";
 import { useSelector } from "react-redux";
 import ChatApi from "../../api/ChatApi";
+import { VideoCallWindow } from "../VideoCallWindow";
+import { generateRoomID } from "../../helper/GenerateRoomId";
+const ChatNav = ({ friendInfo, setChatBoxVisible, userInfo, socket }) => {
+  const [receivingCall, setReceivingCall] = useState(false);
+  const [callerSignal, setCallerSignal] = useState();
+  const [sendCall, setsendCall] = useState(false);
+  const [caller, setCaller] = useState();
+  const myVideo = useRef();
+  const userVideo = useRef();
+  const connectionRef = useRef();
+  useEffect(() => {
+    socket.on("sendCallRequest", (data) => {
+      setReceivingCall(true);
+      setCallerSignal(data.signal);
+      setCaller(() => data.from);
+    });
+    // eslint-disable-next-line
+  }, []);
 
-const ChatNav = ({ friendInfo, setChatBoxVisible }) => {
   return (
     <div className="flex h-12 w-full items-center justify-between p-1 text-base font-medium shadow-navBar">
+      {receivingCall || sendCall ? (
+        <VideoCallWindow
+          sender={userInfo}
+          receiver={friendInfo}
+          socket={socket}
+          receivingCall={receivingCall}
+          sendCall={sendCall}
+          caller={caller}
+          callerSignal={callerSignal}
+          ref={{
+            myVideoRef: myVideo,
+            userVideoRef: userVideo,
+            connectionRef: connectionRef,
+          }}
+        />
+      ) : null}
       <div className=" flex cursor-pointer items-center gap-2 rounded-sm px-3 py-2 hover:bg-iconHover">
         <Avatar
           sx={{ width: "32px", height: "32px" }}
@@ -23,31 +56,25 @@ const ChatNav = ({ friendInfo, setChatBoxVisible }) => {
         />
         {friendInfo?.firstname + " " + friendInfo?.surname}
       </div>
-      <div className=" flex gap-1">
-        <span>
-          <LocalPhoneSharp
-            sx={{ color: "#bcc0c4" }}
-            className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
-          />
-        </span>
-        <span>
-          <Videocam
-            sx={{ color: "#bcc0c4" }}
-            className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
-          />
-        </span>
-        <span>
-          <Remove
-            sx={{ color: "#bcc0c4" }}
-            className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
-          />
-        </span>
-        <span onClick={() => setChatBoxVisible(false)}>
-          <Clear
-            sx={{ color: "#bcc0c4" }}
-            className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
-          />
-        </span>
+      <div className="flex gap-1">
+        <LocalPhoneSharp
+          sx={{ color: "#bcc0c4" }}
+          className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
+        />
+        <Videocam
+          sx={{ color: "#bcc0c4" }}
+          className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
+          onClick={() => setsendCall(true)}
+        />
+        <Remove
+          sx={{ color: "#bcc0c4" }}
+          className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
+        />
+        <Clear
+          sx={{ color: "#bcc0c4" }}
+          className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
+          onClick={() => setChatBoxVisible(false)}
+        />
       </div>
     </div>
   );
@@ -63,23 +90,15 @@ const ChatContent = ({ messages }) => {
   );
 };
 
-const ChatInput = ({ userInfo, socket, friendId }) => {
+const ChatInput = ({ userInfo, socket, roomId }) => {
   const [newMessage, setnewMessage] = useState();
-  const generateRoomID = (senderId, friendId) => {
-    // Sort the IDs to ensure consistency regardless of the order they are passed in
-    const sortedIds = [senderId, friendId].sort((a, b) => a - b);
 
-    // Concatenate the sorted IDs to form the room ID
-    const roomId = sortedIds.join("_");
-
-    return roomId;
-  };
   const handleSendMessage = (e) => {
     if (e.key === "Enter") {
       const info = {
         senderId: userInfo.id,
         content: newMessage,
-        roomId: generateRoomID(userInfo.id, friendId),
+        roomId: roomId,
       };
       socket?.emit("message", info);
       setnewMessage("");
@@ -122,6 +141,8 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
   };
   useEffect(() => {
     const friend = friends.find((item) => item.id === friendId);
+    const roomId = generateRoomID(userInfo.id, friendId);
+    socket?.emit("joinChat", { roomId, userId: userInfo.id });
     setfriendInfo(friend);
     // eslint-disable-next-line
   }, [friendId]);
@@ -134,6 +155,7 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
     };
     // eslint-disable-next-line
   }, [MessageListener]);
+
   useEffect(() => {
     const getHistoryChat = async () => {
       try {
@@ -148,28 +170,24 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
     getHistoryChat();
   }, [userInfo.id, friendId]);
 
-  const generateRoomID = (senderId, friendId) => {
-    // Sort the IDs to ensure consistency regardless of the order they are passed in
-    const sortedIds = [senderId, friendId].sort((a, b) => a - b);
-
-    // Concatenate the sorted IDs to form the room ID
-    const roomId = sortedIds.join("_");
-
-    return roomId;
-  };
-
   return (
     <div className="absolute -bottom-20 right-8 h-113.75 w-84.5 pl-[10px]">
-      <div className=" h-full w-full rounded-md bg-white  shadow-loginForm">
+      <div className=" relative h-full w-full rounded-md  bg-white shadow-loginForm">
         {/* top-chat navbar */}
         <ChatNav
           setChatBoxVisible={setChatBoxVisible}
           friendInfo={friendInfo}
+          userInfo={userInfo}
+          socket={socket}
         />
         {/* content */}
         <ChatContent messages={messages} />
         {/* bottom-chat input */}
-        <ChatInput socket={socket} userInfo={userInfo} friendId={friendId} />
+        <ChatInput
+          socket={socket}
+          userInfo={userInfo}
+          roomId={generateRoomID(userInfo.id, friendId)}
+        />
       </div>
     </div>
   );

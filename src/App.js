@@ -12,7 +12,6 @@ function App() {
         <Route path="login" element={<LoginPage/>}/>
         <Route path='profile/:id' element={<ProfilePage/>}/>
         <Route path="/search" element={<SearchPage/>}/>
-
       </Routes>
     </div>
   );

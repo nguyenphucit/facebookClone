@@ -50,7 +50,7 @@ const PostDetailContent = ({ data, commentIpRef }) => {
       <div className="h-auto w-full whitespace-pre-wrap px-3 text-start text-sm">
         {data.content}
       </div>
-      <div className="mt-3 w-full">
+      <div className="mt-3 flex w-full justify-center bg-[#333333]">
         <img src={data.file[0]} className="" alt="" />
       </div>
       <div className="flex w-full justify-between px-4 py-1">
@@ -156,23 +156,6 @@ const CommentInput = ({ data, commentIpRef, socket }) => {
 export const PostDetail = ({ data, setpostDetail }) => {
   const commentIpRef = useRef();
   const { socket } = useSelector((state) => state.socket);
-  // const { id } = useSelector((state) => state.user.userInfo);
-  // const dispatch = useDispatch();
-  // const NotificationListener = (notification) => {
-  //   if (id === notification.receiverId) {
-  //     console.log(notification)
-  //     dispatch(getNotification({ notification: notification }));
-  //   }
-  // };
-  // useEffect(() => {
-  //   socket?.on("notification", (notification) =>
-  //     NotificationListener(notification),
-  //   );
-  //   // return async () => {
-  //   //   socket?.off("notification", NotificationListener);
-  //   // };
-  //   // eslint-disable-next-line
-  // }, []);
   return (
     <div className="fixed left-0 top-0 z-[100] h-dvh w-dvw bg-[#fcfcfd] bg-opacity-50 ">
       <div className="absolute bottom-0 left-0 right-0 top-0 z-50 mb-auto ml-auto mr-auto mt-auto h-158 w-175 rounded-md bg-white shadow-loginForm xs:w-dvw">

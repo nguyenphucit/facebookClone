@@ -45,7 +45,7 @@ const UserInfo = ({ user }) => {
         </AvatarGroup>
       </div>
       <button
-        className="bg-messageBtn text-boldprimary flex h-9  items-center justify-center self-end rounded-md  px-3 text-sm font-semibold hover:brightness-95"
+        className="flex h-9 items-center justify-center  self-end rounded-md bg-messageBtn px-3  text-sm font-semibold text-boldprimary hover:brightness-95"
         onClick={() => handleAddFriend(user.id)}
       >
         {user.friends.some((friend) => friend.id === userInfo.id)
@@ -82,6 +82,7 @@ export const SearchPage = () => {
     };
     FindBySearchKeyWord();
   }, [search, dispatch]);
+
   return (
     <div className="relative min-h-dvh  w-dvw overflow-y-auto bg-newFeedmain">
       <NavBar />
