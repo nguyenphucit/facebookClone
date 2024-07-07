@@ -19,6 +19,7 @@ const UserInfo = ({ user }) => {
       receiverId: user.id,
     };
     try {
+      console.log(socket, notifyInfo);
       socket.emit("notification", notifyInfo);
     } catch (error) {
       console.log(error);

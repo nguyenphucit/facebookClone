@@ -1,12 +1,16 @@
 import axios from 'axios';
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.REACT_APP_WEBSERVER_URL || "http://localhost:3001" ,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 axiosClient.interceptors.request.use(
   function (config) {
+    const accessToken = sessionStorage.getItem('access_token');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
     return config;
   },
   function (error) {

@@ -2,6 +2,7 @@ import axiosClient from "./axiosConfig"
 
 const AuthApi={
     Login:async (loginInfo)=>{
+        console.log(process.env.REACT_APP_WEBSERVER_URL)
         const url='/auth/login'
         try {
             const response=await axiosClient.post(url,loginInfo) 

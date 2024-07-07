@@ -81,19 +81,28 @@ export const NewFeed = () => {
         console.log(error);
       }
     };
-    getPosts();
+    if (
+      sessionStorage.getItem("access_token") !== null &&
+      sessionStorage.getItem("access_token") !== "undefined"
+    )
+      getPosts();
     // eslint-disable-next-line
   }, [id]);
   useEffect(() => {
     const getFriends = async () => {
       try {
         const response = await FriendApi.getFriendById(id);
-        if (response) dispatch(getFriendByUserId({ friends: response }));
+        if (response)
+          dispatch(getFriendByUserId({ friends: response.friendList }));
       } catch (error) {
         console.log(error);
       }
     };
-    getFriends();
+    if (
+      sessionStorage.getItem("access_token") !== null &&
+      sessionStorage.getItem("access_token") !== "undefined"
+    )
+      getFriends();
     // eslint-disable-next-line
   }, [id]);
   useEffect(() => {
@@ -106,17 +115,24 @@ export const NewFeed = () => {
         console.log(error);
       }
     };
-    getNotifications();
+    if (
+      sessionStorage.getItem("access_token") !== null &&
+      sessionStorage.getItem("access_token") !== "undefined"
+    )
+      getNotifications();
     // eslint-disable-next-line
   }, [id]);
   useEffect(() => {
     if (socket !== undefined) {
-      const newSocket = io("http://localhost:8001");
+      const newSocket = io(
+        process.env.REACT_APP_WEBSERVER_URL ?? "http://localhost:3001",
+      );
       dispatch(setSocket({ socket: newSocket }));
     }
     // eslint-disable-next-line
   }, [id]);
   const NotificationListener = (notification) => {
+    console.log(notification);
     if (id === notification.receiverId) {
       dispatch(getNotification({ notification: notification }));
     }
@@ -128,6 +144,7 @@ export const NewFeed = () => {
       );
     // eslint-disable-next-line
   }, [socket]);
+  console.log(socket);
   return (
     <div className="relative min-h-dvh  w-dvw overflow-hidden bg-newFeedmain">
       {Loading ? <LoadingPage /> : null}

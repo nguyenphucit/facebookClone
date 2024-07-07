@@ -99,7 +99,7 @@ const CreatePostMedia = ({
             />
           </label>
           {postAction.map((item) => (
-            <div className={style.PostCreateIconBox}>
+            <div className={style.PostCreateIconBox} key={item.icon}>
               <img
                 src={item.icon}
                 alt={item.alt}
