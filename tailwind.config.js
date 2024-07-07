@@ -1,14 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",'./public/index.html'
   ],
   theme: {
     extend: {
       boxShadow:{
-        'loginForm':'rgba(0, 0, 0, 0.35) 0px 5px 15px;',
-        'settingForm':'rgba(0, 0, 0, 0.35) 0px 3px 6px;',
-        'navBar':'-1px 8px 0px -5px rgba(170,168,168,0.15);'
+        'loginForm':'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        'settingForm':'rgba(0, 0, 0, 0.35) 0px 3px 6px',
+        'navBar':'-1px 8px 0px -5px rgba(170,168,168,0.15)'
       },
       width:{
         '90':'22.5rem',
@@ -64,10 +64,10 @@ module.exports = {
       'GlobalHover':'rgba(0,0,0,0.6)',
       'onlineStatus':"#6edb3f",
       'boldprimary':"#0064da",
-      'loading':"linear-gradient(#b5b5b5 0 0) padding-box,linear-gradient(rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.5) 66%, rgba(255,255,255,1) 100%) border-box;"
+      'loading':"linear-gradient(#b5b5b5 0 0) padding-box,linear-gradient(rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.5) 66%, rgba(255,255,255,1) 100%) border-box"
      },
    backgroundImage:{
-    loading:"linear-gradient(#b5b5b5 0 0) padding-box,linear-gradient(rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.5) 66%, rgba(255,255,255,1) 100%) border-box;"
+    loading:"linear-gradient(#b5b5b5 0 0) padding-box,linear-gradient(rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.5) 66%, rgba(255,255,255,1) 100%) border-box"
    },
      textColor:{
       'primary':'#0866ff',
@@ -93,5 +93,7 @@ module.exports = {
   },
   plugins: [
     require('tailwind-scrollbar')({ nocompatible: true,important:true }),
+    require("tailwindcss"),
+    require('autoprefixer'),
   ],
 }
