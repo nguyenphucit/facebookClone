@@ -9,7 +9,7 @@ const FriendApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data
         }
     }
     },
@@ -21,7 +21,18 @@ const FriendApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data
+        }
+    },
+
+    GetMutualFriend:async(userId,friendId)=>{
+        const url=`/friend/mutualFriend/${userId}?friendId=${friendId}`
+        try {
+            const response=await axiosClient.get(url)
+            return response
+        } catch (error) {
+            if(error.response)
+            return error.response.data
         }
     }
 }

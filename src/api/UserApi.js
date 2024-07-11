@@ -8,7 +8,7 @@ const UserApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data
         }
     },
     getAllUser:async({search,items_per_page,page})=>{
@@ -17,8 +17,8 @@ const UserApi={
             const response=await axiosClient.get(url)
             return response
         } catch (error) {
-            if(error.response)
-            return error.response.data.message  
+            if(error)
+            return error.response.data  
         }
     },
     UpdateAvatar:async(formData,userId)=>{
@@ -30,7 +30,7 @@ const UserApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data 
         }
     },
 }

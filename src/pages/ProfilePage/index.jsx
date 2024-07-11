@@ -11,6 +11,7 @@ import {
   getAllPostsByUserId,
 } from "../../slice/ProfileSlice";
 import { useParams } from "react-router-dom";
+import { LoadingPage } from "../LoadingPage";
 
 const ImageInProfile = ({ images }) => {
   return (
@@ -52,34 +53,51 @@ export const ProfilePage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { posts, images } = useSelector((state) => state.profile);
+  const { userInfo } = useSelector((state) => state.user);
+  const [loading, setloading] = useState(false);
   useEffect(() => {
     const getPosts = async () => {
       try {
         const response = await PostApi.getPostByUserId(id);
-        if (Array.isArray(response))
-          dispatch(getAllPostsByUserId({ posts: response }));
+        if (response.statusCode === 200)
+          dispatch(getAllPostsByUserId({ posts: response.data }));
+        else if (response.statusCode === 401) {
+          alert(response.message);
+          sessionStorage.removeItem("access_token");
+          window.location.replace("/");
+        } else alert(response.message);
         dispatch(getAllImagesByUserId());
       } catch (error) {
         console.log(error);
       }
     };
-    getPosts();
+    if (
+      sessionStorage.getItem("access_token") !== null &&
+      sessionStorage.getItem("access_token") !== "undefined"
+    )
+      getPosts();
     // eslint-disable-next-line
   }, [id]);
   return (
     <div className="relative min-h-dvh  w-dvw overflow-hidden bg-newFeedmain">
+      {loading ? <LoadingPage /> : null}
       {CreateFormVisible ? (
-        <CreatePostForm setCreatePost={setCreateFormVisible} />
+        <CreatePostForm
+          setCreatePost={setCreateFormVisible}
+          setLoading={setloading}
+        />
       ) : null}
       <NavBar />
       {/* top Info ( main info) */}
       <ProfileTopInfo userId={id} />
       {/*profile content ( post-image,...) */}
       <div className="mt-4 flex w-full justify-center">
-        <div className="flex min-h-dvh w-3/5  ">
+        <div className="flex min-h-dvh w-3/5 xs:w-full xs:flex-col xs:items-center ">
           <LeftProfileInfo images={images} />
-          <div className="mb-3 ml-3 w-125 flex-auto p-4 ">
-            <CreatePost setCreatePostVisible={setCreateFormVisible} />
+          <div className="mb-3 ml-3 w-125 flex-auto p-4 xs:w-full ">
+            {Number.parseInt(id) === userInfo.id ? (
+              <CreatePost setCreatePostVisible={setCreateFormVisible} />
+            ) : null}
             <ListPost posts={posts} />
           </div>
         </div>

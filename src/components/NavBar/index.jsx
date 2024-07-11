@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Apps,
   Notifications,
@@ -18,6 +18,8 @@ import style from "./index.module.css";
 import { SettingForm } from "../SettingForm";
 import { NotificationForm } from "../NotificationForm";
 import NotificationApi from "../../api/NotificationApi";
+import { getAllNotifications } from "../../slice/UserSlice";
+// import { getAllNotifications } from "../../slice/UserSlice";
 
 const LeftNav = () => {
   const navigate = useNavigate();
@@ -71,12 +73,20 @@ const RightNav = () => {
   const { userInfo, notifications } = useSelector((state) => state.user);
   const [navSetting, setNavSetting] = useState("");
   const navFunction = ["notification", "message", "setting"];
-
+  const dispatch = useDispatch();
   const handleNotificationClick = async () => {
-    await NotificationApi.updateNotificationStatus(userInfo.id);
+    const response = await NotificationApi.updateNotificationStatus(
+      userInfo.id,
+    );
+    if (response.statusCode === 200) {
+      const newNotification = await NotificationApi.getNotificationByUserId(
+        userInfo.id,
+      );
+      if (newNotification.statusCode === 200)
+        dispatch(getAllNotifications({ notifications: newNotification.data }));
+    }
     setNavSetting((prev) => (prev === navFunction[0] ? "" : navFunction[0]));
   };
-
   return (
     <div className="flex-1 items-center justify-center">
       <ul className="flex items-center justify-end gap-5 xs:gap-1">

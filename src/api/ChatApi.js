@@ -9,7 +9,7 @@ const ChatApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data
         }
     }
     }

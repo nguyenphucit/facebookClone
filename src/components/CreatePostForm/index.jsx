@@ -153,10 +153,10 @@ export const CreatePostForm = ({ setCreatePost, setLoading }) => {
         };
         const formData = convertToFormData(postData, ImageFile);
         const response = await PostApi.createPost(formData);
-        if (typeof response === "object") {
+        if (response.statusCode === 201) {
           setLoading(false);
           alert("Successfully created post");
-          dispatch(addPost({ post: response }));
+          dispatch(addPost({ post: response.data }));
           setCreatePost(false);
         }
       } catch (error) {

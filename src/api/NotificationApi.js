@@ -10,7 +10,7 @@ const NotificationApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data
         }
     },
 
@@ -21,7 +21,18 @@ const NotificationApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data
+        }
+    },
+
+    deleteNotificationById:async(notificationId)=>{
+        const url=`/notification/${notificationId}`
+        try {
+            const response=await axiosClient.delete(url)
+            return response
+        } catch (error) {
+            if(error.response)
+            return error.response.data
         }
     }
 }

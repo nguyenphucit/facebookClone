@@ -120,7 +120,15 @@ const CommentInput = ({ data, commentIpRef, socket }) => {
         socket?.emit("notification", notifyInfo);
       }
       setComment("");
-      dispatch(updateCommentToPost({ commentInfo: response, postId: data.id }));
+      if (response.statusCode === 201)
+        dispatch(
+          updateCommentToPost({ commentInfo: response.data, postId: data.id }),
+        );
+      else if (response.statusCode === 401) {
+        alert(response.message);
+        sessionStorage.removeItem("access_token");
+        window.location.replace("/");
+      } else alert(response.message);
     } catch (error) {
       console.log(error);
     }

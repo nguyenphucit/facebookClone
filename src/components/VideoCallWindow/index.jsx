@@ -184,7 +184,7 @@ export const VideoCallWindow = forwardRef(
               >
                 <CallEnd sx={{ color: "white" }} />
               </span>
-              {receivingCall ? (
+              {receivingCall && !callAccepted ? (
                 <span
                   className="h-10 w-10 cursor-pointer content-center rounded-full bg-loginBtn text-center"
                   onClick={() => AsnswerCall()}

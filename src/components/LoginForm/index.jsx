@@ -18,13 +18,13 @@ export const LoginForm = ({ setIsRegister }) => {
         email: Email,
         password: Password,
       });
-      if (typeof response === "object") {
-        dispatch(Login(response));
-        sessionStorage.setItem("access_token", response.access_token);
-        delete response.access_token;
-        dispatch(getUserInfo({ user: response }));
+      if (response.statusCode === 201) {
+        dispatch(Login(response.data));
+        sessionStorage.setItem("access_token", response.data.access_token);
+        delete response.data.access_token;
+        dispatch(getUserInfo({ user: response.data }));
         navigate("/");
-      } else alert(response);
+      } else alert(response.message);
     } catch (error) {
       console.log(error);
     }

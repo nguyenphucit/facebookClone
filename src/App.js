@@ -6,7 +6,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { SearchPage } from './pages/SearchPage';
 function App() {
   return (
-    <div className="App" style={{fontSize:"28px"}}>
+    <div className="App" style={{fontSize:"28px",overflowX:"hidden"}}>
        <Routes>
         <Route path="/" element={<NewFeed/>}/>
         <Route path="login" element={<LoginPage/>}/>

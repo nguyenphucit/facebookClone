@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { calculateTimeDifference, formatTimeDiff } from "../../helper/TimeDiff";
 import FriendApi from "../../api/FriendsApi";
 import { useSelector } from "react-redux";
+import NotificationApi from "../../api/NotificationApi";
 
 export const Notification = ({ notificationInfo }) => {
   const [timeDiff, setTimeDiff] = useState({});
@@ -14,13 +15,9 @@ export const Notification = ({ notificationInfo }) => {
 
   const handleAcceptFriendRequest = async () => {
     try {
-      const response = await FriendApi.AddFriend(
-        notificationInfo.sender.id,
-        userInfo.id,
-      );
-      if (response) {
-        alert("Đã chấp nhận lời mời kết bạn");
-      }
+      await FriendApi.AddFriend(notificationInfo.sender.id, userInfo.id);
+      await NotificationApi.deleteNotificationById(notificationInfo.id);
+      alert("Đã chấp nhận lời mời kết bạn");
     } catch (error) {
       console.error(error);
     }

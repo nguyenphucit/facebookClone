@@ -12,8 +12,7 @@ const PostApi={
             const response=await axiosClient.get(url)
             return response
         } catch (error) {
-            if(error.response)
-            return error.response.data.message  
+            return error.response.data
         }
     },
     getPostByUserId:async(userId)=>{
@@ -22,8 +21,8 @@ const PostApi={
             const response=await axiosClient.get(url)
             return response
         } catch (error) {
-            if(error.response)
-            return error.response.data.message  
+            if(error)
+            return error.response.data
         }
     },
     createPost:async(postData)=>{
@@ -35,7 +34,7 @@ const PostApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data  
         }
     },
 
@@ -46,7 +45,7 @@ const PostApi={
             return response
         } catch (error) {
             if(error.response)
-            return error.response.data.message  
+            return error.response.data  
         }
     }
 }

@@ -57,7 +57,7 @@ export const NewFeed = () => {
             if (id === null || id === undefined) {
               const payload = JSON.parse(utf8Payload);
               const userInfo = await UserApi.getUserById(payload.id);
-              dispatch(getUserInfo({ user: userInfo }));
+              dispatch(getUserInfo({ user: userInfo.data }));
             }
           } else {
             console.error("Invalid access_token format");
@@ -75,8 +75,13 @@ export const NewFeed = () => {
     const getPosts = async () => {
       try {
         const response = await PostApi.getAllPosts({});
-        if (typeof response === "object")
-          dispatch(getAllPosts({ posts: response.data }));
+        if (response.statusCode === 200)
+          dispatch(getAllPosts({ posts: response.data.data }));
+        else if (response.statusCode === 401) {
+          alert(response.message);
+          sessionStorage.removeItem("access_token");
+          window.location.replace("/");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -92,15 +97,21 @@ export const NewFeed = () => {
     const getFriends = async () => {
       try {
         const response = await FriendApi.getFriendById(id);
-        if (response)
-          dispatch(getFriendByUserId({ friends: response.friendList }));
+        if (response.statusCode === 200)
+          dispatch(getFriendByUserId({ friends: response.data.friendList }));
+        else if (response.statusCode === 401) {
+          alert(response.message);
+          sessionStorage.removeItem("access_token");
+          window.location.replace("/");
+        } else alert(response.message);
       } catch (error) {
         console.log(error);
       }
     };
     if (
       sessionStorage.getItem("access_token") !== null &&
-      sessionStorage.getItem("access_token") !== "undefined"
+      sessionStorage.getItem("access_token") !== "undefined" &&
+      id
     )
       getFriends();
     // eslint-disable-next-line
@@ -109,15 +120,21 @@ export const NewFeed = () => {
     const getNotifications = async () => {
       try {
         const response = await NotificationApi.getNotificationByUserId(id);
-        if (response)
-          dispatch(getAllNotifications({ notifications: response }));
+        if (response.statusCode === 200)
+          dispatch(getAllNotifications({ notifications: response.data }));
+        else if (response.statusCode === 401) {
+          alert(response.message);
+          sessionStorage.removeItem("access_token");
+          window.location.replace("/");
+        } else alert(response.message);
       } catch (error) {
         console.log(error);
       }
     };
     if (
       sessionStorage.getItem("access_token") !== null &&
-      sessionStorage.getItem("access_token") !== "undefined"
+      sessionStorage.getItem("access_token") !== "undefined" &&
+      id
     )
       getNotifications();
     // eslint-disable-next-line
@@ -125,14 +142,13 @@ export const NewFeed = () => {
   useEffect(() => {
     if (socket !== undefined) {
       const newSocket = io(
-        process.env.REACT_APP_WEBSERVER_URL ?? "http://localhost:3001",
+        process.env.REACT_APP_WEBSERVER_URL ?? "http://localhost:8001",
       );
       dispatch(setSocket({ socket: newSocket }));
     }
     // eslint-disable-next-line
   }, [id]);
   const NotificationListener = (notification) => {
-    console.log(notification);
     if (id === notification.receiverId) {
       dispatch(getNotification({ notification: notification }));
     }
@@ -144,7 +160,6 @@ export const NewFeed = () => {
       );
     // eslint-disable-next-line
   }, [socket]);
-  console.log(socket);
   return (
     <div className="relative min-h-dvh  w-dvw overflow-hidden bg-newFeedmain">
       {Loading ? <LoadingPage /> : null}

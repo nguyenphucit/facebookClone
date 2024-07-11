@@ -162,7 +162,12 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
         const response = await ChatApi.getChatByRoomId(
           generateRoomID(userInfo.id, friendId),
         );
-        setMessages(() => response);
+        if (response.statusCode === 200) setMessages(() => response.data);
+        else if (response.statusCode === 401) {
+          alert(response.message);
+          sessionStorage.removeItem("access_token");
+          window.location.replace("/");
+        } else alert(response.message);
       } catch (error) {
         console.log(error);
       }
