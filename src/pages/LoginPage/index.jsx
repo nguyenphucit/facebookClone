@@ -14,7 +14,7 @@ export const LoginPage = () => {
           <RegisterForm setIsRegister={setIsRegister} setLoading={setLoading} />
         </div>
       ) : null}
-      <div className="mb-52 flex h-4/5 px-8 pt-10 xs:flex-col">
+      <div className="mb-52 flex h-4/5 px-8 pt-10 xs:flex-col ">
         <div className="ml-60 mr-5 mt-36 flex flex-1 flex-col items-start  xs:m-0 xs:mb-5">
           <div className=" xs:flex xs:w-full xs:items-center xs:justify-center">
             <img

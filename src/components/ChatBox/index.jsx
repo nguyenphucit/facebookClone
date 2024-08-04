@@ -81,8 +81,21 @@ const ChatNav = ({ friendInfo, setChatBoxVisible, userInfo, socket }) => {
 };
 
 const ChatContent = ({ messages }) => {
+  const chatContentRef = useRef();
+  useEffect(() => {
+    if (chatContentRef.current) {
+      const { scrollHeight, clientHeight } = chatContentRef.current;
+      chatContentRef.current.scrollTop = scrollHeight - clientHeight;
+      setTimeout(() => {
+        chatContentRef.current.scrollTop += 200;
+      }, 0);
+    }
+  }, [messages.length]);
   return (
-    <div className="flex h-4/5 flex-col gap-3 overflow-y-auto overflow-x-hidden p-3 pb-5">
+    <div
+      className="flex h-4/5 flex-col gap-3 overflow-y-auto overflow-x-hidden p-3 pb-5"
+      ref={chatContentRef}
+    >
       {messages?.map((item) => (
         <Message key={item.id} messageInfo={item} />
       ))}
@@ -176,7 +189,7 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
   }, [userInfo.id, friendId]);
 
   return (
-    <div className="absolute -bottom-20 right-8 h-113.75 w-84.5 pl-[10px]">
+    <div className="absolute -bottom-20 right-8 z-10 h-113.75 w-84.5 pl-[10px]">
       <div className=" relative h-full w-full rounded-md  bg-white shadow-loginForm">
         {/* top-chat navbar */}
         <ChatNav
