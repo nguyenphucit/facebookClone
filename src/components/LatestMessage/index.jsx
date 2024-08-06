@@ -16,6 +16,7 @@ export const LatestMessage = ({ LatestMessageInfo, setNavSetting }) => {
     );
     setNavSetting((prev) => "");
   };
+  console.log(LatestMessageInfo);
   return (
     <div
       className="relative mb-4 h-20 w-86 cursor-pointer bg-white px-1"
@@ -37,7 +38,12 @@ export const LatestMessage = ({ LatestMessageInfo, setNavSetting }) => {
             {`${LatestMessageInfo?.receiver?.firstname} ${LatestMessageInfo?.receiver?.surname} `}
           </strong>
           <div className="flex gap-2 text-commentAuthor text-registerLabel">
-            <div className="overflow-hidden">{LatestMessageInfo?.content}</div>
+            <div
+              className={`overflow-hidden ${LatestMessageInfo?.status === "UNSEEN" ? "font-semibold text-black" : ""}`}
+            >
+              {LatestMessageInfo?.content}
+            </div>
+
             <span>{formatTimeDiff(timeDiff)}</span>
           </div>
         </div>

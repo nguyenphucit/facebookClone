@@ -107,7 +107,7 @@ const ChatContent = ({ messages }) => {
 
 const ChatInput = ({ userInfo, socket, roomId }) => {
   const [newMessage, setnewMessage] = useState();
-
+  const { currentChat } = useSelector((state) => state.chat);
   const handleSendMessage = (e) => {
     if (e.key === "Enter") {
       const info = {
@@ -115,7 +115,13 @@ const ChatInput = ({ userInfo, socket, roomId }) => {
         content: newMessage,
         roomId: roomId,
       };
+      const notifyInfo = {
+        type: "CHAT_NOTIFY",
+        senderId: userInfo.id,
+        receiverId: currentChat,
+      };
       socket?.emit("message", info);
+      socket?.emit("notification", notifyInfo);
       setnewMessage("");
     }
   };
@@ -160,6 +166,10 @@ export const ChatBox = () => {
     const roomId = generateRoomID(userInfo.id, currentChat);
     socket?.emit("joinChat", { roomId, userId: userInfo.id });
     setfriendInfo(friend);
+    const updateMessageStatusByRoom = async () => {
+      await ChatApi.updateMessagesStatusByRoomId(roomId);
+    };
+    updateMessageStatusByRoom();
     // eslint-disable-next-line
   }, [currentChat]);
 

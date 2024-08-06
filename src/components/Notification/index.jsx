@@ -8,7 +8,6 @@ import NotificationApi from "../../api/NotificationApi";
 export const Notification = ({ notificationInfo }) => {
   const [timeDiff, setTimeDiff] = useState({});
   const { userInfo } = useSelector((state) => state.user);
-
   useEffect(() => {
     setTimeDiff(calculateTimeDifference(notificationInfo.createdAt));
   }, [notificationInfo.createdAt]);
@@ -22,7 +21,14 @@ export const Notification = ({ notificationInfo }) => {
       console.error(error);
     }
   };
-
+  const handleDeclineFriendRequest = async () => {
+    try {
+      await NotificationApi.deleteNotificationById(notificationInfo.id);
+      alert("đã từ chối lời mời kết bạn");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="relative mb-4 h-23.5 w-86 cursor-pointer bg-white px-1">
       <div className="flex h-full w-full rounded-xl py-2 pr-3 hover:bg-iconHover">
@@ -48,7 +54,10 @@ export const Notification = ({ notificationInfo }) => {
       </div>
       {notificationInfo.type === "FRIENDREQUEST_NOTIFY" && (
         <div className="absolute bottom-1 right-4 flex gap-3">
-          <button className="flex items-center justify-center rounded-md bg-iconHover p-2 px-4 text-sm font-semibold text-black hover:brightness-95">
+          <button
+            className="flex items-center justify-center rounded-md bg-iconHover p-2 px-4 text-sm font-semibold text-black hover:brightness-95"
+            onClick={() => handleDeclineFriendRequest()}
+          >
             Từ chối
           </button>
           <button

@@ -35,7 +35,7 @@ export const NotificationForm = () => {
       </div>
       <div className="">
         {notifications?.map((item) => {
-          return item.status === "SEEN" ? (
+          return item.status === "SEEN" && item.type !== "CHAT_NOTIFY" ? (
             <Notification notificationInfo={item} key={item.id} />
           ) : null;
         })}

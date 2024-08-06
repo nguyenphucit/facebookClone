@@ -116,6 +116,7 @@ const CommentInput = ({ data, commentIpRef, socket }) => {
     };
     try {
       const response = await PostApi.commentOnPost(commentInfo, data.id);
+      console.log(response, data.author.id !== userInfo.id);
       if (data.author.id !== userInfo.id) {
         socket?.emit("notification", notifyInfo);
       }

@@ -28,7 +28,7 @@ export const SettingForm = () => {
           onClick={() => navigate(`/profile/${userInfo.id}`)}
         >
           <img
-            src={noAvatar}
+            src={userInfo?.avatar ?? noAvatar}
             alt="avatar"
             className=" h-10 w-10 rounded-full shadow-inner "
           />

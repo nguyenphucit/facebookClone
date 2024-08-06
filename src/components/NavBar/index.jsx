@@ -95,9 +95,23 @@ const RightNav = () => {
   };
   const handleMessengerClick = async () => {
     if (navSetting !== "message") {
-      const response = await ChatApi.getLatestMessage(userInfo.id);
+      const response = await NotificationApi.updateNotificationStatus(
+        userInfo.id,
+      );
       if (response.statusCode === 200) {
-        dispatch(getAllLatestChat({ latestChats: response.data }));
+        const newNotification = await NotificationApi.getNotificationByUserId(
+          userInfo.id,
+        );
+        if (newNotification.statusCode === 200)
+          dispatch(
+            getAllNotifications({ notifications: newNotification.data }),
+          );
+
+        const newChatStatus = await ChatApi.getLatestMessage(userInfo.id);
+        if (newChatStatus.statusCode === 200) {
+          dispatch(getAllLatestChat({ latestChats: newChatStatus.data }));
+        }
+        await ChatApi.updateMessageStatus(userInfo.id);
       }
     }
     setNavSetting((prev) => (prev === navFunction[1] ? "" : navFunction[1]));
@@ -115,6 +129,18 @@ const RightNav = () => {
             className={`${style.topRightMenuIcon} relative`}
             onClick={handleMessengerClick}
           >
+            {notifications.filter(
+              (item) => item.status === "UNSEEN" && item.type === "CHAT_NOTIFY",
+            ).length > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#e41e3f] text-sm text-white">
+                {
+                  notifications.filter(
+                    (item) =>
+                      item.status === "UNSEEN" && item.type === "CHAT_NOTIFY",
+                  ).length
+                }
+              </span>
+            )}
             <img
               src={MessengerImage}
               alt="messenger"
@@ -130,12 +156,15 @@ const RightNav = () => {
             onClick={handleNotificationClick}
           >
             <Notifications sx={{ fontSize: "24px" }} />
-            {notifications.filter((item) => item.status === "UNSEEN").length >
-              0 && (
+            {notifications.filter(
+              (item) => item.status === "UNSEEN" && item.type !== "CHAT_NOTIFY",
+            ).length > 0 && (
               <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#e41e3f] text-sm text-white">
                 {
-                  notifications.filter((item) => item.status === "UNSEEN")
-                    .length
+                  notifications.filter(
+                    (item) =>
+                      item.status === "UNSEEN" && item.type !== "CHAT_NOTIFY",
+                  ).length
                 }
               </span>
             )}

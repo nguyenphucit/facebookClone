@@ -21,6 +21,7 @@ const UserInfo = ({ user }) => {
     };
     try {
       socket.emit("notification", notifyInfo);
+      alert("đã gửi lời mời kết bạn");
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +38,6 @@ const UserInfo = ({ user }) => {
     getMutualFriend();
     // eslint-disable-next-line
   }, [userInfo.id]);
-  console.log(userInfo.id, mutualFriend);
   return (
     <div className="mt-5 flex gap-3 xs:flex-wrap">
       <Avatar sx={{ height: 60, width: 60 }} src={user.avatar} />

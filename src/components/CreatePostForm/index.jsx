@@ -34,7 +34,7 @@ const CreatePostFormHeader = ({ setCreatePost }) => (
 const CreatePostRange = ({ user }) => (
   <div className="flex w-full items-center gap-3 p-2">
     <img
-      src={noAvatar}
+      src={user.userInfo.avatar ?? noAvatar}
       alt="avatar"
       className="h-10 w-10 rounded-full shadow-inner"
     />
