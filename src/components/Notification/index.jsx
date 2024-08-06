@@ -24,8 +24,8 @@ export const Notification = ({ notificationInfo }) => {
   };
 
   return (
-    <div className="relative mb-4 h-23.5 w-86 cursor-pointer rounded-lg bg-white px-1">
-      <div className="flex h-full w-full py-2 pr-3 hover:bg-iconHover">
+    <div className="relative mb-4 h-23.5 w-86 cursor-pointer bg-white px-1">
+      <div className="flex h-full w-full rounded-xl py-2 pr-3 hover:bg-iconHover">
         <div className="flex h-full w-20 justify-center">
           <Avatar
             src={notificationInfo.sender.avatar}

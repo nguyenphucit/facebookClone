@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState={
     userInfo:{},
     friends:[],
-    notifications:[]
+    notifications:[],
+    latestChats:[]
 }
 const UserSlice=createSlice({
     name:'user',
@@ -27,9 +28,23 @@ const UserSlice=createSlice({
             if(checker.length===0){
             state.notifications.push(notification)
             }
+        },
+
+        getAllLatestChat:(state,action)=>{
+            state.latestChats=[...action.payload.latestChats]
+        },
+
+        updateLatestChatReceiver:(state,action)=>{
+            state.latestChats.map(item=>{
+                const [id1,id2] = item.roomId.split('_').map(Number);  
+                // Determine the receiverId based on the senderId
+                const receiverId = id1 === Number.parseInt(state.userInfo.id) ? id2 : id1;
+
+                return item.receiver=state.friends.find(friend=>friend.id===receiverId)
+            })
+
         }
-        
     }
 })
-export const {getUserInfo,getFriendByUserId,updateUserAvatar,getAllNotifications,getNotification}=UserSlice.actions
+export const {getUserInfo,getFriendByUserId,updateUserAvatar,getAllNotifications,getNotification,getAllLatestChat,updateLatestChatReceiver}=UserSlice.actions
 export default UserSlice.reducer

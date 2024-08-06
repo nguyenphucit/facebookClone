@@ -18,7 +18,9 @@ import style from "./index.module.css";
 import { SettingForm } from "../SettingForm";
 import { NotificationForm } from "../NotificationForm";
 import NotificationApi from "../../api/NotificationApi";
-import { getAllNotifications } from "../../slice/UserSlice";
+import { getAllLatestChat, getAllNotifications } from "../../slice/UserSlice";
+import { ChatNotification } from "../ChatNotification";
+import ChatApi from "../../api/ChatApi";
 // import { getAllNotifications } from "../../slice/UserSlice";
 
 const LeftNav = () => {
@@ -75,17 +77,30 @@ const RightNav = () => {
   const navFunction = ["notification", "message", "setting"];
   const dispatch = useDispatch();
   const handleNotificationClick = async () => {
-    const response = await NotificationApi.updateNotificationStatus(
-      userInfo.id,
-    );
-    if (response.statusCode === 200) {
-      const newNotification = await NotificationApi.getNotificationByUserId(
+    if (navSetting !== "notification") {
+      const response = await NotificationApi.updateNotificationStatus(
         userInfo.id,
       );
-      if (newNotification.statusCode === 200)
-        dispatch(getAllNotifications({ notifications: newNotification.data }));
+      if (response.statusCode === 200) {
+        const newNotification = await NotificationApi.getNotificationByUserId(
+          userInfo.id,
+        );
+        if (newNotification.statusCode === 200)
+          dispatch(
+            getAllNotifications({ notifications: newNotification.data }),
+          );
+      }
     }
     setNavSetting((prev) => (prev === navFunction[0] ? "" : navFunction[0]));
+  };
+  const handleMessengerClick = async () => {
+    if (navSetting !== "message") {
+      const response = await ChatApi.getLatestMessage(userInfo.id);
+      if (response.statusCode === 200) {
+        dispatch(getAllLatestChat({ latestChats: response.data }));
+      }
+    }
+    setNavSetting((prev) => (prev === navFunction[1] ? "" : navFunction[1]));
   };
   return (
     <div className="flex-1 items-center justify-center">
@@ -96,7 +111,10 @@ const RightNav = () => {
           </span>
         </li>
         <li>
-          <span className={`${style.topRightMenuIcon} relative`}>
+          <span
+            className={`${style.topRightMenuIcon} relative`}
+            onClick={handleMessengerClick}
+          >
             <img
               src={MessengerImage}
               alt="messenger"
@@ -125,6 +143,9 @@ const RightNav = () => {
         </li>
         <li className="relative">
           {navSetting === navFunction[0] && <NotificationForm />}
+          {navSetting === navFunction[1] && (
+            <ChatNotification setNavSetting={setNavSetting} />
+          )}
           {navSetting === navFunction[2] && <SettingForm />}
           <span
             className={`${style.topRightMenuIcon} relative`}

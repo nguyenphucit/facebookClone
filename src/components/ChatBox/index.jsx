@@ -10,15 +10,17 @@ import {
 import ImageOrVideoIcon from "../../image/imgOrVideoIcon.png";
 import style from "./index.module.css";
 import Message from "../Message";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ChatApi from "../../api/ChatApi";
 import { VideoCallWindow } from "../VideoCallWindow";
 import { generateRoomID } from "../../helper/GenerateRoomId";
-const ChatNav = ({ friendInfo, setChatBoxVisible, userInfo, socket }) => {
+import { ManageChatBox } from "../../slice/ChatSlice";
+const ChatNav = ({ friendInfo, userInfo, socket }) => {
   const [receivingCall, setReceivingCall] = useState(false);
   const [callerSignal, setCallerSignal] = useState();
   const [sendCall, setsendCall] = useState(false);
   const [caller, setCaller] = useState();
+  const dispatch = useDispatch();
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -73,7 +75,7 @@ const ChatNav = ({ friendInfo, setChatBoxVisible, userInfo, socket }) => {
         <Clear
           sx={{ color: "#bcc0c4" }}
           className="box-content cursor-pointer rounded-full p-1 hover:bg-hover"
-          onClick={() => setChatBoxVisible(false)}
+          onClick={() => dispatch(ManageChatBox({ status: false }))}
         />
       </div>
     </div>
@@ -143,7 +145,7 @@ const ChatInput = ({ userInfo, socket, roomId }) => {
     </div>
   );
 };
-export const ChatBox = ({ setChatBoxVisible, friendId }) => {
+export const ChatBox = () => {
   const friends = useSelector((state) => state.user.friends);
   const { userInfo } = useSelector((state) => state.user);
   const [friendInfo, setfriendInfo] = useState();
@@ -152,13 +154,14 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
   const MessageListener = (message) => {
     setMessages(() => [...messages, message]);
   };
+  const { currentChat } = useSelector((state) => state.chat);
   useEffect(() => {
-    const friend = friends.find((item) => item.id === friendId);
-    const roomId = generateRoomID(userInfo.id, friendId);
+    const friend = friends.find((item) => item.id === currentChat);
+    const roomId = generateRoomID(userInfo.id, currentChat);
     socket?.emit("joinChat", { roomId, userId: userInfo.id });
     setfriendInfo(friend);
     // eslint-disable-next-line
-  }, [friendId]);
+  }, [currentChat]);
 
   useEffect(() => {
     socket?.on("message", MessageListener);
@@ -173,7 +176,7 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
     const getHistoryChat = async () => {
       try {
         const response = await ChatApi.getChatByRoomId(
-          generateRoomID(userInfo.id, friendId),
+          generateRoomID(userInfo.id, currentChat),
         );
         if (response.statusCode === 200) setMessages(() => response.data);
         else if (response.statusCode === 401) {
@@ -186,25 +189,20 @@ export const ChatBox = ({ setChatBoxVisible, friendId }) => {
       }
     };
     getHistoryChat();
-  }, [userInfo.id, friendId]);
+  }, [userInfo.id, currentChat]);
 
   return (
     <div className="absolute -bottom-20 right-8 z-10 h-113.75 w-84.5 pl-[10px]">
       <div className=" relative h-full w-full rounded-md  bg-white shadow-loginForm">
         {/* top-chat navbar */}
-        <ChatNav
-          setChatBoxVisible={setChatBoxVisible}
-          friendInfo={friendInfo}
-          userInfo={userInfo}
-          socket={socket}
-        />
+        <ChatNav friendInfo={friendInfo} userInfo={userInfo} socket={socket} />
         {/* content */}
         <ChatContent messages={messages} />
         {/* bottom-chat input */}
         <ChatInput
           socket={socket}
           userInfo={userInfo}
-          roomId={generateRoomID(userInfo.id, friendId)}
+          roomId={generateRoomID(userInfo.id, currentChat)}
         />
       </div>
     </div>

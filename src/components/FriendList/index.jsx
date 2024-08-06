@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./index.module.css";
 import { Avatar } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SearchIcon from "@mui/icons-material/Search";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ChatBox } from "../ChatBox";
+import { ManageChatBox } from "../../slice/ChatSlice";
 
 const Friend = ({ item, handleOpenChat }) => {
   return (
@@ -57,21 +58,15 @@ const FriendSearch = () => {
 };
 export const FriendList = () => {
   const friends = useSelector((state) => state.user.friends);
-  const [ChatBoxVisible, setChatBoxVisible] = useState(false);
-  const [currentChat, setcurrentChat] = useState();
+  const { chatBoxStatus } = useSelector((state) => state.chat);
+  const dispatch = useDispatch();
   const handleOpenChat = (id) => {
-    setChatBoxVisible(true);
-    setcurrentChat(id);
+    dispatch(ManageChatBox({ status: true, id: id }));
   };
   return (
     <div className="box-border h-dvh  flex-[1] pt-16 xs:hidden">
       <div className="fixed  h-4/5 w-1/4">
-        {ChatBoxVisible ? (
-          <ChatBox
-            setChatBoxVisible={setChatBoxVisible}
-            friendId={currentChat}
-          />
-        ) : null}
+        {chatBoxStatus ? <ChatBox /> : null}
         <FriendSearch />
         <ul className="flex h-full w-full flex-col gap-3 overflow-y-auto pb-20 pl-6 scrollbar scrollbar-track-[#E6E7EB] scrollbar-thumb-[#BCC0C4] scrollbar-thumb-rounded-full scrollbar-w-3">
           {friends?.map((item) => (

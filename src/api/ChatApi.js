@@ -12,6 +12,17 @@ const ChatApi={
             return error.response.data
         }
     }
+    },
+
+    getLatestMessage:async (userId)=>{
+        const url=`/chat/allChat/${userId}`
+        try {
+            const response=await axiosClient.get(url)
+            return response
+        } catch (error) {
+            if(error.response)
+            return error.response.data
+        }
     }
 }
 export default ChatApi
