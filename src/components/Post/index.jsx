@@ -80,6 +80,18 @@ const PostAction = React.memo(({ setpostDetail, data }) => {
     );
     return initialLike ? true : false;
   });
+  useEffect(() => {
+    if (userInfo) {
+      const initialLike = data?.likes?.find(
+        (item) => item.authorId === userInfo.id,
+      );
+      setisLike(() => {
+        return initialLike ? true : false;
+      });
+    }
+    // eslint-disable-next-line
+  }, [userInfo]);
+
   const likeHandling = async () => {
     try {
       const response = await PostApi.likePost(data.id, userInfo.id);

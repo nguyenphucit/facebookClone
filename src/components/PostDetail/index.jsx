@@ -1,5 +1,5 @@
 import { Divider, Avatar } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import noAvatar from "../../image/noAvatar.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -35,11 +35,21 @@ const PostDetailHeader = ({ data, setpostDetail }) => {
 const PostDetailContent = ({ data, commentIpRef }) => {
   const { userInfo } = useSelector((state) => state.user);
   const [isLike, setisLike] = useState(() => {
-    const initialLike = data.likes.find(
+    const initialLike = data?.likes?.find(
       (item) => item.authorId === userInfo.id,
     );
     return initialLike ? true : false;
   });
+  useEffect(() => {
+    const initialLike = data?.likes?.find(
+      (item) => item.authorId === userInfo.id,
+    );
+    console.log(initialLike);
+    setisLike(() => {
+      return initialLike ? true : false;
+    });
+    // eslint-disable-next-line
+  }, []);
   const likeHandling = async () => {
     try {
       const response = await PostApi.likePost(data.id, userInfo.id);
