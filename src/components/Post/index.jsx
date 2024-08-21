@@ -75,7 +75,7 @@ const PostReaction = ({ data }) => {
 const PostAction = React.memo(({ setpostDetail, data }) => {
   const { userInfo } = useSelector((state) => state.user);
   const [isLike, setisLike] = useState(() => {
-    const initialLike = data.likes.find(
+    const initialLike = data?.likes?.find(
       (item) => item.authorId === userInfo.id,
     );
     return initialLike ? true : false;
