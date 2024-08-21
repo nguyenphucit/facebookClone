@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   ModeCommentOutlined,
   ThumbUpOutlined,
-  SentimentSatisfiedRounded,
   ModeComment,
   ReplyRounded,
   SendOutlined,
@@ -34,6 +33,22 @@ const PostDetailHeader = ({ data, setpostDetail }) => {
 };
 
 const PostDetailContent = ({ data, commentIpRef }) => {
+  const { userInfo } = useSelector((state) => state.user);
+  const [isLike, setisLike] = useState(() => {
+    const initialLike = data.likes.find(
+      (item) => item.authorId === userInfo.id,
+    );
+    return initialLike ? true : false;
+  });
+  const likeHandling = async () => {
+    try {
+      const response = await PostApi.likePost(data.id, userInfo.id);
+      if (response.data === 0) setisLike(() => false);
+      else if (response.data === 1) setisLike(() => true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="h-115 w-full overflow-y-scroll scrollbar scrollbar-track-[#E6E7EB] scrollbar-thumb-[#BCC0C4] scrollbar-thumb-rounded-full scrollbar-w-3">
       <div className="flex h-10 w-full px-3">
@@ -56,7 +71,9 @@ const PostDetailContent = ({ data, commentIpRef }) => {
       <div className="flex w-full justify-between px-4 py-1">
         <div className="flex items-center gap-1 text-sm font-semibold text-[rgba(0,0,0,0.6)] ">
           <RecommendRounded color="primary" />
-          <SentimentSatisfiedRounded sx={{ color: "#ffc400" }} />
+          {data.likes.find((item) => item.authorId === userInfo.id)
+            ? `bạn ${data.likes.length - 1 === 0 ? "đã like bài viết này" : ` và ${data.likes.length - 1} người nữa đã like bài viết này`}`
+            : ""}
         </div>
         <div className="flex  items-center gap-1 text-sm font-semibold text-[rgba(0,0,0,0.6)]">
           {data.comments.length}
@@ -69,8 +86,8 @@ const PostDetailContent = ({ data, commentIpRef }) => {
       </div>
       <Divider variant="middle" />
       <div className="flex items-center justify-between px-3">
-        <div className={style.PostActions}>
-          <ThumbUpOutlined />
+        <div className={`${style.PostActions}`} onClick={() => likeHandling()}>
+          <ThumbUpOutlined className={`${isLike ? "text-primary" : ""}`} />
           Thích
         </div>
         <div

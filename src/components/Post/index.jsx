@@ -13,6 +13,8 @@ import {
 import noAvatar from "../../image/noAvatar.png";
 import style from "./index.module.css";
 import { PostDetail } from "../PostDetail";
+import PostApi from "../../api/PostApi";
+import { useSelector } from "react-redux";
 const PostHeader = ({ data }) => {
   const [timeDiff, settimeDiff] = useState();
   useEffect(() => {
@@ -70,11 +72,27 @@ const PostReaction = ({ data }) => {
     </div>
   );
 };
-const PostAction = ({ setpostDetail }) => {
+const PostAction = React.memo(({ setpostDetail, data }) => {
+  const { userInfo } = useSelector((state) => state.user);
+  const [isLike, setisLike] = useState(() => {
+    const initialLike = data.likes.find(
+      (item) => item.authorId === userInfo.id,
+    );
+    return initialLike ? true : false;
+  });
+  const likeHandling = async () => {
+    try {
+      const response = await PostApi.likePost(data.id, userInfo.id);
+      if (response.data === 0) setisLike(() => false);
+      else if (response.data === 1) setisLike(() => true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex items-center justify-between px-3">
-      <div className={style.PostActions}>
-        <ThumbUpOutlined />
+      <div className={style.PostActions} onClick={() => likeHandling()}>
+        <ThumbUpOutlined className={`${isLike ? "text-primary" : ""}`} />
         Thích
       </div>
       <div
@@ -90,7 +108,7 @@ const PostAction = ({ setpostDetail }) => {
       </div>
     </div>
   );
-};
+});
 export const Post = ({ data, search }) => {
   const [postDetail, setpostDetail] = useState(false);
   return (
@@ -100,22 +118,11 @@ export const Post = ({ data, search }) => {
       {postDetail ? (
         <PostDetail data={data} setpostDetail={setpostDetail} />
       ) : null}
-      {/* <div className="flex h-10 w-full px-3">
-        <div className="flex items-center gap-2 text-base font-bold">
-          <Avatar
-            sx={{ width: "32px", height: "32px" }}
-            src={data?.author.avatar ? data.author.avatar : noAvatar}
-          />
-          <span className="flex flex-col self-start">
-            {data.author.firstname + " " + data.author.surname}
-          </span>
-        </div>
-      </div> */}
       <PostHeader data={data} />
       <PostContent data={data} />
       <PostReaction data={data} />
       <Divider variant="middle" />
-      <PostAction setpostDetail={setpostDetail} />
+      <PostAction setpostDetail={setpostDetail} data={data} />
     </div>
   );
 };

@@ -47,6 +47,17 @@ const PostApi={
             if(error.response)
             return error.response.data  
         }
+    },
+
+    likePost:async(postId,userId)=>{
+        const url=`/posts/like/${postId}?userId=${userId}`
+        try {
+            const response=await axiosClient.post(url)
+            return response
+        } catch (error) {
+            if(error.response)
+            return error.response.data  
+        }
     }
 }
 export default PostApi
